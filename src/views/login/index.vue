@@ -78,6 +78,21 @@ export default {
       // 校验整个表单内容规则
       this.$refs.myForm.validate(isOk => {
         if (isOk) {
+          this.$axios({
+            method: 'post',
+            url: 'http://ttapi.research.itcast.cn/mp/v1_0/authorizations',
+            data: this.loginForm
+          }).then(res => {
+            // console.log(res)
+            window.localStorage.setItem('user-token', res.data.data.token)
+            this.$router.push('/home')
+          }).catch(() => {
+            // this.$message({
+            //   message: '您输入账号信息有误，请重新输入',
+            //   type: 'warning'
+            // })
+            this.$message.warning('您输入账号信息有误，请重新输入')
+          })
           console.log('校验成功')
         }
       })
