@@ -63,7 +63,7 @@ export default {
 
 <style  lang="less" scoped>
 .layout-header {
-    height: 50px;
+    height: 60px;
     .el-icon-s-unfold {
         font-size: 22px;
     }

@@ -48,7 +48,7 @@ export default {}
 .layout-aside {
   width: 200px;
   height: 100vh;
-  background-color: #323745;
+  // background-color: #323745;
   .title {
     text-align: center;
     background-color: #2e2f32;
