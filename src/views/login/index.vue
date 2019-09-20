@@ -86,14 +86,7 @@ export default {
             // console.log(res)
             window.localStorage.setItem('user-token', res.data.token)
             this.$router.push('/home')
-          }).catch(() => {
-            // this.$message({
-            //   message: '您输入账号信息有误，请重新输入',
-            //   type: 'warning'
-            // })
-            this.$message.warning('您输入账号信息有误，请重新输入')
           })
-          console.log('校验成功')
         }
       })
     }
