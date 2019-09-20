@@ -21,12 +21,12 @@
 </template>
 
 <script>
-import latoutAside from './../../components/home/layout-aside'
-import latoutHeader from './../../components/home/layout-header'
+// import latoutAside from './../../components/home/layout-aside'
+// import latoutHeader from './../../components/home/layout-header'
 export default {
-  components: {
-    'layout-aside': latoutAside,
-    'layout-header': latoutHeader
-  }
+  // components: {
+  //   'layout-aside': latoutAside,
+  //   'layout-header': latoutHeader
+  // }
 }
 </script>
