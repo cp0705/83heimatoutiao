@@ -37,6 +37,7 @@ export default {
     commandClick (command) {
       if (command === 'account') {
         // 账号信息
+        this.$router.push('/home/account')
       } else if (command === 'git') {
         // git地址
         window.location.href = 'https://github.com/cp0705/83heimatoutiao'
