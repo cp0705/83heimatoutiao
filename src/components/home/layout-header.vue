@@ -5,7 +5,7 @@
       <span class="title">江苏传智播客教育科技股份有限公司</span>
     </el-col>
     <el-col :span="4" align="right">
-      <img class="head-img" :src="userInfo.photo?userInfo.photo:defaultImg" alt />
+      <img class="head-img" :src=" userInfo.photo ? userInfo.photo : defaultImg " alt />
       <!-- 下拉菜单  -->
       <el-dropdown trigger="click" @command="commandClick">
         <span class="el-dropdown-link">
@@ -13,9 +13,9 @@
           <i class="el-icon-arrow-down el-icon--right"></i>
         </span>
         <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item command='account'>个人信息</el-dropdown-item>
-          <el-dropdown-item command='git'>git地址</el-dropdown-item>
-          <el-dropdown-item command='lgout'>退出</el-dropdown-item>
+          <el-dropdown-item command="account">个人信息</el-dropdown-item>
+          <el-dropdown-item command="git">git地址</el-dropdown-item>
+          <el-dropdown-item command="lgout">退出</el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
     </el-col>
@@ -47,12 +47,12 @@ export default {
       }
     },
     getUserInfo () {
-      let token = window.localStorage.getItem('user-token')
+      // let token = window.localStorage.getItem('user-token')
       this.$axios({
-        url: '/user/profile',
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
+        url: '/user/profile'
+        // headers: {
+        //   Authorization: `Bearer ${token}`
+        // }
       }).then(res => {
         this.userInfo = res.data.data
       })
@@ -63,20 +63,20 @@ export default {
 
 <style  lang="less" scoped>
 .layout-header {
-    height: 60px;
-    .el-icon-s-unfold {
-        font-size: 22px;
-    }
-    .title {
-        vertical-align: top;
-        margin-left: 4px;
-    }
-    .head-img {
-        width: 40px;
-        height: 40px;
-        vertical-align: middle;
-        border-radius: 50%;
-        margin-right:4px;
-    }
+  height: 60px;
+  .el-icon-s-unfold {
+    font-size: 22px;
+  }
+  .title {
+    vertical-align: top;
+    margin-left: 4px;
+  }
+  .head-img {
+    width: 40px;
+    height: 40px;
+    vertical-align: middle;
+    border-radius: 50%;
+    margin-right: 4px;
+  }
 }
 </style>
