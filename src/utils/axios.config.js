@@ -1,6 +1,7 @@
 import { Message } from 'element-ui'
 import router from './../permission'
 import axios from 'axios'
+import Jsonbig from 'json-bigint'
 axios.defaults.baseURL = 'http://ttapi.research.itcast.cn/mp/v1_0'
 // 请求拦截
 axios.interceptors.request.use(function (config) {
@@ -45,6 +46,10 @@ axios.interceptors.response.use(function (response) {
   Message({ type: 'warning', message })
   return new Promise(() => {})
 })
+// 大数据失真处理  保证不失真
+axios.defaults.transformResponse = [function (data) {
+  return Jsonbig.parse(data)
+}]
 export default {
   install (Vue) {
     Vue.prototype.$axios = axios
