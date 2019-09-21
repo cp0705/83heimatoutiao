@@ -1,10 +1,12 @@
 // 统一注册组件
-import latoutAside from './home/layout-aside'
-import latoutHeader from './home/layout-header'
+import layoutAside from './home/layout-aside'
+import layoutHeader from './home/layout-header'
+import breadCrumb from './common/bread-crumb'
 
 export default {
   install (Vue) {
-    Vue.component('layout-aside', latoutAside)
-    Vue.component('layout-header', latoutHeader)
+    Vue.component('layout-aside', layoutAside)
+    Vue.component('layout-header', layoutHeader)
+    Vue.component('bread-crumb', breadCrumb)
   }
 }

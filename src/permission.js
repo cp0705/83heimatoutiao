@@ -6,8 +6,8 @@ router.beforeEach(function (to, from, next) {
     if (token) {
       next()
     } else {
-      // 返回登录页
-      next('/login')
+      // 返回登录页  next(false)中断
+      next('/login') // 强制跳转
     }
   } else {
     next() // 放行
