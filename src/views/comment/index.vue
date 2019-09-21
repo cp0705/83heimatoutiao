@@ -17,10 +17,18 @@
       <el-table-column label="操作" align="center">
         <template slot-scope="obj">
           <el-button size="small" type="text">修改</el-button>
-          <el-button size="small" :style="{color:obj.row.comment_status?'#E6A23C':'#409EFF'}" type="text" @click="closeOrOpen(obj.row)">{{obj.row.comment_status ? '关闭评论' : '打开评论'}}</el-button>
+          <el-button
+            size="small"
+            :style="{color:obj.row.comment_status?'#E6A23C':'#409EFF'}"
+            type="text"
+            @click="closeOrOpen(obj.row)"
+          >{{obj.row.comment_status ? '关闭评论' : '打开评论'}}</el-button>
         </template>
       </el-table-column>
     </el-table>
+    <el-row type="flex" justify="center" style="margin:20px 0">
+      <el-pagination @current-change="changePage" :current-page='page.currentPage' :page-size="page.pageSize" background layout="prev, pager, next" :total="page.total"></el-pagination>
+    </el-row>
   </el-card>
 </template>
 
@@ -28,14 +36,24 @@
 export default {
   data () {
     return {
-      list: []
+      list: [],
+      page: {
+        total: 0, // 总条数
+        currentPage: 1, // 当前页
+        pageSize: 10// 每页条数
+      }
     }
   },
   created () {
     this.getComment()
   },
   methods: {
-    closeOrOpen (row) { // row当前行数据
+    changePage (current) {
+      this.page.currentPage = current
+      this.getComment()
+    },
+    closeOrOpen (row) {
+      // row当前行数据
       let str = row.comment_status ? '关闭' : '打开'
       this.$confirm(`您确定要${str}评论吗？`, '提示').then(() => {
         this.$axios({
@@ -54,9 +72,10 @@ export default {
     getComment () {
       this.$axios({
         url: '/articles',
-        params: { response_type: 'comment' }
+        params: { response_type: 'comment', page: this.page.currentPage, per_page: this.page.pageSize }
       }).then(res => {
         this.list = res.data.results
+        this.page.total = res.data.total_count
       })
     }
   }
