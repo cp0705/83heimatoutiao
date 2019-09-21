@@ -1,17 +1,137 @@
 <template>
-  <el-card slot="header">
-      <bread-crumb>
-        <template slot="title">素材管理</template>
-      </bread-crumb>
+  <el-card>
+    <bread-crumbs slot="header">
+      <template slot="title">素材管理</template>
+    </bread-crumbs>
+    <el-upload action='' :show-file-list='false' :http-request='upload' class='to-upload'>
+        <el-button type="primary">图片上传</el-button>
+    </el-upload>
+    <el-tabs v-model="activeName" @tab-click="handleClick">
+      <el-tab-pane label="全部素材" name="all">
+        <div class="img-list">
+          <el-card class="img-item" v-for="item in list" :key="item.id">
+            <img :src="item.url" alt />
+            <el-row class="operate">
+              <i class="el-icon-star-on" :style="{color: item.is_collected ? 'red' : '#000'}"></i>
+              <i class="el-icon-delete-solid"></i>
+            </el-row>
+          </el-card>
+        </div>
+      </el-tab-pane>
+      <el-tab-pane label="收藏素材" name="collect">
+        <div class="img-list">
+          <el-card class="img-itemsc" v-for="item in list" :key="item.id">
+            <img :src="item.url" alt />
+          </el-card>
+        </div>
+      </el-tab-pane>
+    </el-tabs>
+    <el-pagination @current-change="changePage" :current-page="page.currentPage" align="center" style="margin-top:20px" background layout="prev, pager, next" :total="page.total"></el-pagination>
   </el-card>
 </template>
 
 <script>
 export default {
-
+  data () {
+    return {
+      activeName: 'all',
+      list: [],
+      page: {
+        total: 0,
+        currentPage: 1,
+        pageSize: 10
+      }
+    }
+  },
+  created () {
+    this.getData()
+  },
+  methods: {
+    upload (params) {
+      let data = new FormData()
+      data.append('image', params.file)
+      this.$axios({
+        url: '/user/images',
+        method: 'post',
+        data
+      }).then(() => {
+        this.getData()
+        this.$message.success('上传成功')
+      })
+    },
+    changePage (current) {
+      this.page.currentPage = current
+      this.getData()
+    },
+    handleClick () {
+      this.page.currentPage = 1
+      this.getData()
+    },
+    getData () {
+      this.$axios({
+        url: '/user/images',
+        params: {
+          collect: this.activeName !== 'all',
+          page: this.page.currentPage,
+          per_page: this.page.pageSize
+        }
+      }).then(res => {
+        this.list = res.data.results
+        this.page.total = res.data.total_count
+        console.log(this.list)
+      })
+    }
+  }
 }
 </script>
 
-<style>
-
+<style lang='less' scope>
+.to-upload {
+    position: absolute;
+    right: 0;
+    margin-right: 20px;
+    margin-top: -10px;
+    z-index: 9999;
+}
+.img-list {
+  display: flex;
+  flex-flow: wrap;
+  .img-item, .img-itemsc {
+    position: relative;
+    height: 180px;
+    width: 180px;
+    margin: 30px;
+    border-radius: 6px;
+    .el-card__body {
+      padding: 0;
+      img {
+        width: 100%;
+        height: 150px;
+      }
+    }
+    .operate {
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      height: 30px;
+      width: 100%;
+      background-color: #fff;
+      i {
+        font-size: 20px;
+      }
+    }
+  }
+  .img-itemsc {
+      .el-card__body {
+      padding: 0;
+      img {
+        width: 100%;
+        height: 100%;
+      }
+    }
+  }
+}
 </style>
