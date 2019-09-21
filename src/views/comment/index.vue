@@ -1,5 +1,5 @@
 <template>
-  <el-card>
+  <el-card v-loading="loading">
     <!-- 面包屑组件 -->
     <bread-crumb slot="header">
       <template slot="title">评论列表</template>
@@ -41,7 +41,8 @@ export default {
         total: 0, // 总条数
         currentPage: 1, // 当前页
         pageSize: 10// 每页条数
-      }
+      },
+      loading: false
     }
   },
   created () {
@@ -70,12 +71,14 @@ export default {
       return cellValue ? '正常' : '关闭'
     },
     getComment () {
+      this.loading = true
       this.$axios({
         url: '/articles',
         params: { response_type: 'comment', page: this.page.currentPage, per_page: this.page.pageSize }
       }).then(res => {
         this.list = res.data.results
         this.page.total = res.data.total_count
+        this.loading = false
       })
     }
   }
