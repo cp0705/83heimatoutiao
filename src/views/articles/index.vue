@@ -50,7 +50,7 @@
         <span>
           <i class="el-icon-edit"></i>修改
         </span>
-        <span>
+        <span @click="delArticle(item.id.toString())">
           <i class="el-icon-delete"></i>删除
         </span>
       </div>
@@ -91,38 +91,18 @@ export default {
     this.getData()
     this.getChannels()
   },
-  filters: {
-    // 0-草稿，1-待审核，2-审核通过，3-审核失败，4-已删除
-    statusText (value) {
-      switch (value) {
-        case 0:
-          return '草稿'
-        case 1:
-          return '待审核'
-        case 2:
-          return '审核通过'
-        case 3:
-          return '审核失败'
-        case 4:
-          return '已删除'
-      }
-    },
-    statusType (value) {
-      switch (value) {
-        case 0:
-          return 'warning'
-        case 1:
-          return 'info'
-        case 2:
-          return 'success'
-        case 3:
-          return 'danger'
-        case 4:
-          return 'danger'
-      }
-    }
-  },
   methods: {
+    delArticle (id) {
+      this.$confirm('您确定删除该文章吗？').then(() => {
+        this.$axios({
+          url: `/articles/${id}`,
+          method: 'delete'
+        }).then(() => {
+          this.$message.success('删除成功')
+          this.queryArticles()
+        })
+      })
+    },
     queryArticles () {
       let params = {
         channel_id: this.formData.channel_id,
@@ -158,6 +138,37 @@ export default {
         this.list = res.data.results
         this.page.total = res.data.total_count
       })
+    }
+  },
+  filters: {
+    // 0-草稿，1-待审核，2-审核通过，3-审核失败，4-已删除
+    statusText (value) {
+      switch (value) {
+        case 0:
+          return '草稿'
+        case 1:
+          return '待审核'
+        case 2:
+          return '审核通过'
+        case 3:
+          return '审核失败'
+        case 4:
+          return '已删除'
+      }
+    },
+    statusType (value) {
+      switch (value) {
+        case 0:
+          return 'warning'
+        case 1:
+          return 'info'
+        case 2:
+          return 'success'
+        case 3:
+          return 'danger'
+        case 4:
+          return 'danger'
+      }
     }
   }
 }
@@ -205,6 +216,7 @@ export default {
     font-size: 12px;
     span {
       margin-right: 6px;
+      cursor: pointer;
     }
   }
 }
