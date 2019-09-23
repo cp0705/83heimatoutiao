@@ -48,7 +48,7 @@ axios.interceptors.response.use(function (response) {
 })
 // 大数据失真处理  保证不失真
 axios.defaults.transformResponse = [function (data) {
-  return Jsonbig.parse(data)
+  return data ? Jsonbig.parse(data) : {}
 }]
 export default {
   install (Vue) {

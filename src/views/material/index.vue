@@ -1,8 +1,8 @@
 <template>
-  <el-card>
-    <bread-crumbs slot="header">
+  <el-card v-loading="loading">
+    <bread-crumb slot="header">
       <template slot="title">素材管理</template>
-    </bread-crumbs>
+    </bread-crumb>
     <el-upload action='' :show-file-list='false' :http-request='upload' class='to-upload'>
         <el-button type="primary">图片上传</el-button>
     </el-upload>
@@ -11,10 +11,12 @@
         <div class="img-list">
           <el-card class="img-item" v-for="item in list" :key="item.id">
             <img :src="item.url" alt />
-            <el-row class="operate">
-              <i class="el-icon-star-on" :style="{color: item.is_collected ? 'red' : '#000'}"></i>
-              <i class="el-icon-delete-solid"></i>
-            </el-row>
+            <div class="operate">
+              <!-- 收藏/取消收藏 -->
+              <i @click="collectOrCancel(item)" class="el-icon-star-on" :style="{color: item.is_collected ? 'red' : '#000'}"></i>
+              <!-- 删除 -->
+              <i @click="delImg(item.id)" class="el-icon-delete-solid"></i>
+            </div>
           </el-card>
         </div>
       </el-tab-pane>
@@ -40,13 +42,37 @@ export default {
         total: 0,
         currentPage: 1,
         pageSize: 10
-      }
+      },
+      loading: false
     }
   },
   created () {
     this.getData()
   },
   methods: {
+    collectOrCancel (item) {
+      let str = item.is_collected ? '取消' : ''
+      this.$confirm(`您确认${str}收藏该图片吗？`).then(() => {
+        this.$axios({
+          url: `/user/images/${item.id}`,
+          method: 'put',
+          data: { collect: !item.is_collected }
+        }).then(() => {
+          this.getData()
+          this.$message.success(`${str}收藏成功`)
+        })
+      })
+    },
+    delImg (id) {
+      this.$confirm('你确定删除吗？').then(() => {
+        this.$axios({
+          url: `/user/images/${id}`,
+          method: 'delete'
+        }).then(() => {
+          this.getData()
+        })
+      })
+    },
     upload (params) {
       let data = new FormData()
       data.append('image', params.file)
@@ -68,6 +94,7 @@ export default {
       this.getData()
     },
     getData () {
+      this.loading = true
       this.$axios({
         url: '/user/images',
         params: {
@@ -78,7 +105,7 @@ export default {
       }).then(res => {
         this.list = res.data.results
         this.page.total = res.data.total_count
-        console.log(this.list)
+        this.loading = false
       })
     }
   }
