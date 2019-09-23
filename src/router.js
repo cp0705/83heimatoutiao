@@ -28,6 +28,10 @@ export default new Router({
         {
           path: 'material', // 素材管理
           component: () => import('./views/material')
+        },
+        {
+          path: 'articles', // 内容列表
+          component: () => import('./views/articles')
         }
       ]
     },
