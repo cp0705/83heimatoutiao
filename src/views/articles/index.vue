@@ -47,7 +47,7 @@
         </div>
       </div>
       <div class="right">
-        <span>
+        <span @click="editArticle(item.id.toString())">
           <i class="el-icon-edit"></i>修改
         </span>
         <span @click="delArticle(item.id.toString())">
@@ -92,6 +92,9 @@ export default {
     this.getChannels()
   },
   methods: {
+    editArticle (id) {
+      this.$router.push(`/home/publish/${id}`)
+    },
     delArticle (id) {
       this.$confirm('您确定删除该文章吗？').then(() => {
         this.$axios({
@@ -126,7 +129,6 @@ export default {
       this.$axios({
         url: '/channels'
       }).then(res => {
-        console.log(res)
         this.channels = res.data.channels
       })
     },
