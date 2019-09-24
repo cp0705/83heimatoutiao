@@ -40,6 +40,10 @@ export default new Router({
         {
           path: 'publish/:articleId',
           component: () => import('./views/publish')
+        },
+        {
+          path: 'account', // 账户信息
+          component: () => import('./views/account')
         }
       ]
     },
