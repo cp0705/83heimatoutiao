@@ -55,3 +55,4 @@ export default {
     Vue.prototype.$axios = axios
   }
 }
+export { axios }

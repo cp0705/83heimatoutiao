@@ -66,8 +66,8 @@
     ></el-pagination>
   </el-card>
 </template>
-119
 <script>
+import { getArticles } from './../../api/articles'
 export default {
   data () {
     return {
@@ -88,6 +88,7 @@ export default {
     }
   },
   created () {
+    //   getArticles()
     this.getData()
     this.getChannels()
   },
@@ -131,10 +132,11 @@ export default {
       })
     },
     async getData (params) {
-      let res = await this.$axios({
-        url: '/articles',
-        params
-      })
+    //   let res = await this.$axios({
+    //     url: '/articles',
+    //     params
+    //   })
+      let res = await getArticles(params)
       this.list = res.data.results
       this.page.total = res.data.total_count
     }
