@@ -4,6 +4,7 @@ import layoutHeader from './home/layout-header'
 import breadCrumb from './common/bread-crumb'
 import coverImag from './publish/cover-image'
 import selectImg from './publish/select-img'
+import timeDate from './common/time-date'
 // 富文本编辑器
 import 'quill/dist/quill.core.css'
 import 'quill/dist/quill.snow.css'
@@ -19,5 +20,6 @@ export default {
     Vue.component('quill-editor', quillEditor)// 富文本编辑器
     Vue.component('cover-image', coverImag)
     Vue.component('select-img', selectImg)
+    Vue.component('time-date', timeDate)
   }
 }

@@ -1,5 +1,8 @@
 <template>
   <div class="home">
+    <el-row style="height:100vh" type="flex" justify="center" align="middle">
+      <time-date></time-date>
+    </el-row>
   </div>
 </template>
 
