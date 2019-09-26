@@ -95,16 +95,14 @@ export default {
     editArticle (id) {
       this.$router.push(`/home/publish/${id}`)
     },
-    delArticle (id) {
-      this.$confirm('您确定删除该文章吗？').then(() => {
-        this.$axios({
-          url: `/articles/${id}`,
-          method: 'delete'
-        }).then(() => {
-          this.$message.success('删除成功')
-          this.queryArticles()
-        })
+    async delArticle (id) {
+      await this.$confirm('您确定删除该文章吗？')
+      await this.$axios({
+        url: `/articles/${id}`,
+        method: 'delete'
       })
+      this.$message.success('删除成功')
+      this.queryArticles()
     },
     queryArticles () {
       let params = {
@@ -132,14 +130,13 @@ export default {
         this.channels = res.data.channels
       })
     },
-    getData (params) {
-      this.$axios({
+    async getData (params) {
+      let res = await this.$axios({
         url: '/articles',
         params
-      }).then(res => {
-        this.list = res.data.results
-        this.page.total = res.data.total_count
       })
+      this.list = res.data.results
+      this.page.total = res.data.total_count
     }
   },
   filters: {

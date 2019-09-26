@@ -27,7 +27,14 @@
       </el-table-column>
     </el-table>
     <el-row type="flex" justify="center" style="margin:20px 0">
-      <el-pagination @current-change="changePage" :current-page='page.currentPage' :page-size="page.pageSize" background layout="prev, pager, next" :total="page.total"></el-pagination>
+      <el-pagination
+        @current-change="changePage"
+        :current-page="page.currentPage"
+        :page-size="page.pageSize"
+        background
+        layout="prev, pager, next"
+        :total="page.total"
+      ></el-pagination>
     </el-row>
   </el-card>
 </template>
@@ -53,33 +60,34 @@ export default {
       this.page.currentPage = current
       this.getComment()
     },
-    closeOrOpen (row) {
+    async closeOrOpen (row) {
       // row当前行数据
       let str = row.comment_status ? '关闭' : '打开'
-      this.$confirm(`您确定要${str}评论吗？`, '提示').then(() => {
-        this.$axios({
+      try {
+        await this.$confirm(`您确定要${str}评论吗？`, '提示')
+        await this.$axios({
           url: '/comments/status',
           method: 'put',
           params: { article_id: row.id.toString() },
           data: { allow_comment: !row.comment_status }
-        }).then(() => {
-          this.getComment()
         })
-      })
+        this.getComment()
+      } catch (error) {
+        console.log(error)
+      }
     },
     stautsFormatter (row, column, cellValue, index) {
       return cellValue ? '正常' : '关闭'
     },
-    getComment () {
+    async getComment () {
       this.loading = true
-      this.$axios({
+      let res = await this.$axios({
         url: '/articles',
         params: { response_type: 'comment', page: this.page.currentPage, per_page: this.page.pageSize }
-      }).then(res => {
-        this.list = res.data.results
-        this.page.total = res.data.total_count
-        this.loading = false
       })
+      this.list = res.data.results
+      this.page.total = res.data.total_count
+      this.loading = false
     }
   }
 }

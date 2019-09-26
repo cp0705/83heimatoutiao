@@ -52,6 +52,10 @@ export default new Router({
         {
           path: 'gradata', //
           component: () => import('./views/fans')
+        },
+        {
+          path: 'async', //
+          component: () => import('./views/async')
         }
       ]
     },
