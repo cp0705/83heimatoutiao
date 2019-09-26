@@ -1,6 +1,9 @@
 import router from './router'
+import NProgress from 'nprogress'
+import 'nprogress/nprogress.css'
 // 全局前置守卫
 router.beforeEach(function (to, from, next) {
+  NProgress.start()
   if (to.path.startsWith('/home')) {
     let token = window.localStorage.getItem('user-token')
     if (token) {
@@ -12,5 +15,8 @@ router.beforeEach(function (to, from, next) {
   } else {
     next() // 放行
   }
+})
+router.afterEach(() => {
+  NProgress.done()
 })
 export default router

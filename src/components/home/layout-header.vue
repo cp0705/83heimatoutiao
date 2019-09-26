@@ -4,7 +4,7 @@
       <i class="el-icon-s-unfold"></i>
       <span class="title">江苏传智播客教育科技股份有限公司</span>
     </el-col>
-    <el-col :span="4" align="right">
+    <el-col :span="4" align="right" style="margin-right:30px">
       <img class="head-img" :src=" userInfo.photo ? userInfo.photo : defaultImg " alt />
       <!-- 下拉菜单  -->
       <el-dropdown trigger="click" @command="commandClick">
